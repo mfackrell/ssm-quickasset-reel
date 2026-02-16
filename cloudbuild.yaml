@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'deploy',
+        'ssm-ssm-reel',
+        '--source=.',
+        '--region=us-central1',
+        '--timeout=3600'
+      ]
