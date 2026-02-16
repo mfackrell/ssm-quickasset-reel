@@ -1,73 +1,67 @@
-// steps/selectSSMTopic.js
+// steps/selectQATopic.js
 
 // -------- AXIS 1: BUSINESS FUNCTION --------
 const businessFunctions = [
-  "marketing",
-  "sales",
-  "operations",
-  "customer acquisition",
+  "asset monetization",
+  "storefront ownership",
+  "automated fulfillment",
+  "payment friction",
+  "tech-stack simplification",
+  "pricing for value",
+  "conversion optimization",
+  "niche positioning",
   "customer retention",
-  "brand positioning",
-  "lead generation",
-  "content creation",
-  "time management",
-  "systems and automation",
-  "growth strategy",
-  "visibility and reach",
-  "trust building",
-  "decision making",
-  "resource allocation"
+  "speed to market",
+  "global tax/compliance",
+  "workflow productization"
 ];
 
 // -------- AXIS 2: COMMON FRICTION / MISUNDERSTANDING --------
 const frictions = [
-  "inconsistent execution",
-  "doing everything manually",
-  "confusing activity with progress",
-  "chasing tactics instead of strategy",
-  "lack of systems",
-  "overcomplicating simple processes",
-  "underestimating consistency",
-  "trying to be everywhere at once",
-  "burnout from context switching",
-  "unclear priorities",
-  "poor feedback loops",
-  "reactive decision making",
-  "misaligned tools",
-  "copying competitors blindly",
-  "not measuring what matters"
+  "over-engineering the storefront",
+  "marketplace fee dependency (Etsy/Gumroad)",
+  "tech-setup paralysis",
+  "manual delivery burnout",
+  "undervaluing 'boring' assets",
+  "the 'I am not a dev' mental block",
+  "leaky bucket checkouts",
+  "fear of Stripe complexity",
+  "lack of professional polish",
+  "distraction by 'meta-work'",
+  "waiting for 'perfect' before shipping",
+  "giving away value for free"
 ];
 
 // -------- AXIS 3: EXPLANATORY LENS --------
 const explanatoryLenses = [
-  "plain-language breakdown",
-  "behind-the-scenes explanation",
-  "cause-and-effect explanation",
-  "common myth vs reality",
-  "simple mental model",
-  "pattern explanation",
-  "why this works in practice",
-  "what usually goes wrong",
-  "long-term vs short-term thinking",
-  "system-level view",
-  "tradeoff analysis",
-  "real-world observation"
+  "marketplace vs direct math",
+  "the 5-minute launch walkthrough",
+  "professional vs amateur checkout",
+  "the power of the 'Micro-Asset'",
+  "why 'boring' sells best",
+  "the 'Payment Link' mindset",
+  "invisible automation secrets",
+  "trust-building for practitioners",
+  "scaling from 1 to 100 sales",
+  "asset productization 101",
+  "the 'Link-in-Bio' revenue trap",
+  "behind-the-scenes of a $20 sale"
 ];
 
 // -------- AXIS 4: INTENDED TAKEAWAY --------
 const takeaways = [
-  "clearer understanding",
-  "better mental model",
-  "reduced confusion",
-  "improved prioritization",
-  "more realistic expectations",
-  "awareness of tradeoffs",
-  "recognition of hidden costs",
-  "understanding why consistency matters",
-  "insight into leverage points",
-  "confidence in simpler approaches",
-  "clarity around systems vs effort",
-  "awareness of long-term impact"
+  "confidence to ship today",
+  "clarity on the 'fee tax'",
+  "reduced technical anxiety",
+  "excitement about niche assets",
+  "path to the first $100",
+  "recognition of passive leverage",
+  "focus on the payment link",
+  "understanding direct ownership",
+  "awareness of friction costs",
+  "validation of their expertise",
+  "less worry about 'building' more",
+  "vision of a lean revenue stream"
 ];
 
 // Utility
@@ -77,7 +71,7 @@ function pickRandom(arr) {
 
 // -------- PUBLIC API --------
 export async function selectTopic() {
-  console.log("Selecting topic using SSM education matrix...");
+  console.log("Selecting topic using QuickAsset Monetization Matrix...");
 
   const selection = {
     businessFunction: pickRandom(businessFunctions),
@@ -86,7 +80,7 @@ export async function selectTopic() {
     takeaway: pickRandom(takeaways)
   };
 
-  console.log("SSM Topic Selection:", selection);
+  console.log("QuickAsset Topic Selection:", selection);
 
   return JSON.stringify(selection);
 }
