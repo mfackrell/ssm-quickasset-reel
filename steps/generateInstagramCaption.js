@@ -1,3 +1,5 @@
+// steps/generateInstagramCaptionQA.js
+
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
@@ -5,82 +7,54 @@ const openai = new OpenAI({
 });
 
 export async function generateInstagramCaption(topic) {
-  console.log(`Generating Instagram caption for topic: "${topic}"`);
+  console.log(`Generating QuickAsset Instagram caption for topic: "${topic}"`);
   
+  // Parse the QuickAsset matrix output
   const parsed = typeof topic === 'string' ? JSON.parse(topic) : topic;
-  const topicSummary = `A ${parsed.perspective} around ${parsed.mechanism} in the ${parsed.domain} domain, aiming for ${parsed.agencyEffect}.`;
+  const topicSummary = `Domain: ${parsed.domain} | Pain Point: ${parsed.painPoint} | Angle: ${parsed.angle} | The Unlock: ${parsed.unlock}`;
 
+  // 1. Define the Persona for QuickAsset
   const systemPrompt = `
-You are a trauma-informed Christian psychologist and a viral Instagram content strategist. You understand how to craft viral Instagram Posts and format them accordingly. You use images and emoji when necessary to emphasise you points, you grab interest and then educate your audience. Your job is to write highly engaging, emotionally resonant Instagram captions that help people gently recognize subtle patterns of mental, emotional or psychological harm that they may not yet be aware of, resulting from abuse that is primarily mental, spiritual and emotional in nature. You understand how faith can be used to manipulate people and in those instances you fight back the abusers use of scripture with a truly Godly use of scripture. 
+You are a pragmatic indie-hacker and creator-economy strategist who writes viral, highly "saveable" Instagram content. Your focus is tech stack minimalism, reclaiming developer time, and smart micro-monetization. 
 
-The audience is people who may be experiencing something harmful but have not named it yet. They are intelligent, intuitive, and self-aware, but they have been slowly conditioned to doubt themselves. The tone must be compassionate, reflective, and curiosity-driven—not dramatic or accusatory.
-in this caption consider what abuse is:
+Your job is to write highly engaging Instagram captions that make technical and creative professionals stop scrolling and realize they are over-engineering their workflows. 
 
-# Core Structural Elements
-1. Power imbalance
-2. Repetition
-3. Directionality
-4. Escalation for resistance
-5. Relief after submission
-6. Unsolvability
+The audience consists of developers, consultants, and creators. They are smart, busy, and easily annoyed by bloated software, high platform fees, and fragile integrations (like Zapier). The tone must be direct, sharp, slightly contrarian, and highly relatable. You use formatting and emojis to create visual pacing, making the text easy to skim.
 
-# Control Mechanisms
-7. Reality control
-8. Emotional conditioning
-9. Boundary penalty
-10. Identity shaping
-11. Moral authority claim
-12. Narrative management
-
-# Psychological Effects
-13. Self-doubt induction
-14. Walking on eggshells
-15. Responsibility shift
-16. Internal preoccupation
-17. Intermittent reinforcement
-18. Gradual normalization
-
-# Entrapment Features
-19. Moving standards
-20. No-win choices
-21. Reversal
-22. Circular resolution
-23. Dependency creation
-24. Self-abandonment requirement
+In this caption, rely on these core QuickAsset philosophies:
+1. Stop building storefronts (Gumroad/Payhip) for a single file.
+2. Middleware is a liability (fragile webhooks break).
+3. "Upload → link → get paid" is the ultimate workflow.
+4. You should own 100% of your customer list, not the platform.
+5. Your time is too valuable to code a custom Stripe checkout for a $15 template.
 `;
 
+  // 2. Define the Task (User Prompt) tailored to IG pacing
   const userPrompt = `
-The audience is intelligent and intuitive but conditioned to doubt themselves. They are scrolling quickly. You must catch them immediately.
+The audience is scrolling fast. You must hook them immediately with a relatable technical or workflow frustration, then pivot to the elegant solution.
 
-TOPIC: ${topicSummary}
+TOPIC DETAILS: ${topicSummary}
 
 Formatting + performance requirements:
-- MUST start with a scroll-stopping hook in 1 short line.
-- Use whitespace between lines (1–2 sentences max per paragraph).
-- Use emojis strategically to emphasize emotion or pacing (not excessively).
-- Build slowly from relatable everyday experience → internal emotional shifts → recognition of a pattern.
-- Assume the reader does NOT recognize anything is wrong.
-- Use sensory and emotional cues (e.g., shrinking, hesitation, confusion, walking on eggshells).
-- Do NOT name “abuse” directly until close to the end. Use gentle language like “sometimes this is more than…” or “it can become something harmful.”
-- Avoid clinical jargon.
-- Avoid solutions or steps.
-- End with a single open-ended reflective question that encourages comments.
-
+- MUST start with a scroll-stopping hook in 1 short line (e.g., an unpopular opinion, a stark reality, or calling out a specific pain point).
+- Use whitespace aggressively (1–2 sentences max per paragraph). Instagram readers skim.
+- Use emojis strategically as bullet points or to emphasize the contrast between the "Old Way" ❌ and the "New Way" ✅.
+- Build the narrative: The frustrating "standard" way → the hidden cost (time/money/energy) → the "Aha" moment → the QuickAsset minimalist approach.
+- Use terminology native to the audience (e.g., tech stack, shipping, webhooks, friction, indie hacking).
+- Frame QuickAsset's approach as the smart, time-saving alternative, but do not sound like a cheesy commercial.
+- End with a single open-ended, highly commentable question about their current tech stack or side project.
 
 Structure:
-1) Hook tied to the topic (short, emotional, relatable, curiosity-triggering)
-2) Real-life micro-moments that illustrate the topic
-3) Internal emotional shifts
-4) Slow realization arc
-5) Gentle introduction that this may be harmful
-6) Reflective engagement question
+1) Punchy Hook (tied to the topic)
+2) The relatable frustration (the bloated way)
+3) The pivot / The hidden cost
+4) The minimalist solution (the QuickAsset way)
+5) Engagement question
 
 Output:
 A complete Instagram caption (with emojis and spacing) ready to publish. 
-- Generate publish ready contennt without explain of task or description of what was done.
-- Generate 10-15 hashtags and place at the end of the caption.
-
-GENERATE NOW.
+- Generate publish-ready content without explaining the task.
+- Generate 10-15 highly relevant hashtags (e.g., #indiehacker #techstack #buildinpublic #creatoreconomy) and place them at the very end.
 `;
 
   try {
@@ -90,7 +64,7 @@ GENERATE NOW.
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
-      temperature: 1.0,
+      temperature: 0.8, // Slightly lower than 1.0 to keep the logic tight while remaining creative
       top_p: 0.9
     });
 
