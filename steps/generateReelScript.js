@@ -1,3 +1,5 @@
+// steps/generateReelScriptQA.js
+
 import OpenAI from 'openai';
 import { cleanAndParseJson } from '../helpers/cleanJson.js';
 
@@ -6,86 +8,73 @@ const openai = new OpenAI({
 });
 
 export async function generateReelScript(topic) {
-  console.log(`Generating Reel Script & Overlay for topic: "${topic}"`);
+  console.log(`Generating QuickAsset Reel Script & Overlay for topic: "${topic}"`);
+
+  // Parse the QuickAsset matrix output
+  const parsed = typeof topic === 'string' ? JSON.parse(topic) : topic;
+  const topicSummary = `Domain: ${parsed.domain} | Pain Point: ${parsed.painPoint} | Angle: ${parsed.angle} | The Unlock: ${parsed.unlock}`;
 
   const systemPrompt = `
-You are writing very short recognition-based scripts for viewers in relationships where harm exists but is not named. Anchor to memory instead of condition.
+You are writing very short, high-impact scripts for technical and creative professionals (developers, indie hackers, consultants). 
 
-The viewer does not see themselves as abused. but the clearly are being abused Mentally, Spiritually and Emotionally in a personal relationship.
-They believe the relationship is complicated, deep, or a communication issue.
-They instinctively adapt themselves to maintain peace.
+Your job is to mirror a frustrating tech-stack moment they already understand, and then present a radically simpler alternative.
 
-Your job is not to explain the relationship.
-Your job is to mirror a moment their body already understands.
+The viewer is highly capable but prone to over-engineering their workflows. They build complex automation chains (Zapier) or set up entire storefronts (Gumroad) just to sell a single digital asset. 
 
-The writing should feel like remembering — not analyzing.
+The writing should feel like a sharp, relieving reality check—not a sales pitch. 
 
 READER EXPERIENCE TARGET
+- The viewer should not feel sold to; they should feel understood.
+- They should recognize their own tendency to overcomplicate things.
+- Write so the moment feels like an inside joke among developers/creators.
 
--The viewer should not feel taught, warned, or analyzed.
--They should feel a private recognition — like remembering something they have never said out loud.
--Write so the moment feels personally lived, not generally true.
-
-Avoid generalizations or summaries.
--Use concrete details that could only come from real experience.
--If the line could apply equally to many different situations, make it more specific.
-
-The goal is quiet recognition, not realization.
-The viewer should feel before they think.
-
-This is NOT describing a situation of mutual disagreement. This is describing a situation in which power & control is being exerted over the viewer by the viewers partner.
+Avoid generic marketing speak. 
+- Use concrete technical realities (e.g., webhooks failing, high platform fees, formatting CSS for a checkout page).
+- Keep it punchy. The viewer is scrolling fast.
 
 STRUCTURE
 
-Write exactly three lines about: "${topic}"
+Write exactly three lines based on the topic provided. 
 
 Each line has a different role.
 
-Line 1 — The rule appears
-A small everyday interaction where the partner’s behavior quietly defines how the interaction must go.
-Nothing dramatic happens, but the dynamic is already set.
+Line 1 — The Frustration (The "Bloated Way")
+A specific, relatable moment where the user is wasting time setting up a complicated workflow for a simple task.
 
-Line 2 — The body knows
-Show the automatic reaction that happens before anything bad actually occurs.
-This reaction exists because the outcome has happened many times before.
-Do not describe emotions directly. Show behavior instead.
+Line 2 — The Hidden Cost (The Realization)
+The moment they realize they are spending more time on the infrastructure than the actual product.
 
-Line 3 — The adjustment
-Show the specific change the person makes so the moment can continue safely.
-Connection is preserved, but authenticity is reduced.
+Line 3 — The Clean Unlock (The QuickAsset Way)
+The radically simple alternative ("Upload -> link -> get paid"). Do not use the word QuickAsset, just describe the flow.
 
 =========
 
 STYLE
-
-Use simple concrete language.
-No explanations, advice, labels, psychology terms, or moral judgments.
-The reader is intelligent but under a high cognitive load. The statements should clearly and easily resonate without the requirement to process long or complicated statements.
-
-The lines should feel observed, not narrated.
+Use simple, direct language. 
+No corporate jargon. 
+The lines should feel fast-paced and slightly contrarian.
 
 Always contrast:
-Their small action → Your internal shift → Your behavioral adaptation
+Over-engineering → Wasted Time → Elegant Simplicity
 
-Keep each line brief and direct.
+Keep each line brief (under 12 words if possible).
 
 OUTPUT FORMAT (JSON ONLY):
 {
-  "Line 1": "[Trigger]",
-  "Line 2": "[Response]",
-  "Line 3": "[Submission]",
-  "overlay_text": "short headline"
+  "Line 1": "[The Bloated Way]",
+  "Line 2": "[The Hidden Cost]",
+  "Line 3": "[The Clean Unlock]",
+  "overlay_text": "[short, punchy 3-5 word headline for the video text]"
 }
-
 `;
 
 const userPrompt = `
-THE SPECIFIC FOCUS FOR THIS SCRIPT IS: ${topic}
+THE SPECIFIC FOCUS FOR THIS SCRIPT IS: ${topicSummary}
 
 Instructions: 
-Using the psychological profile provided in the system prompt, write the 3-line script specifically through the lens of ${topic}. 
+Using the tech/creator profile provided in the system prompt, write the 3-line script specifically through the lens of this topic. 
 
-Ensure Line 1 is a neutral moment related to this topic, Line 2 is the fear response specific to it, and Line 3 is the loss of self resulting from it.
+Ensure Line 1 is the bloated technical setup, Line 2 is the realization of wasted time/effort, and Line 3 is the elegant, direct-link solution.
 `;
 
   try {
